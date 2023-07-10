@@ -22,6 +22,7 @@ import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,6 +31,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Card
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,6 +40,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Wallpapers
 import com.example.woof.data.Dog
 import com.example.woof.data.dogs
 import com.example.woof.ui.theme.WoofTheme
@@ -65,7 +68,10 @@ class MainActivity : ComponentActivity() {
 fun WoofApp() {
     LazyColumn {
         items(dogs) {
-            DogItem(dog = it)
+            DogItem(
+                dog = it,
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+            )
         }
     }
 }
@@ -81,13 +87,15 @@ fun DogItem(
     dog: Dog,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(dimensionResource(R.dimen.padding_small))
-    ) {
-        DogIcon(dog.imageResourceId)
-        DogInformation(dog.name, dog.age)
+    Card(modifier = modifier) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(R.dimen.padding_small))
+        ) {
+            DogIcon(dog.imageResourceId)
+            DogInformation(dog.name, dog.age)
+        }
     }
 }
 
@@ -142,10 +150,25 @@ fun DogInformation(
 /**
  * Composable that displays what the UI of the app looks like in light theme in the design tab.
  */
-@Preview
+@Preview(
+    showBackground = true,
+    wallpaper = Wallpapers.GREEN_DOMINATED_EXAMPLE,
+    showSystemUi = true
+)
 @Composable
-fun WoofPreview() {
+fun WoofLightPreview() {
     WoofTheme(darkTheme = false) {
+        WoofApp()
+    }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true
+)
+@Composable
+fun WoofDarkPreview() {
+    WoofTheme(darkTheme = true) {
         WoofApp()
     }
 }
